@@ -104,6 +104,7 @@ constructor(private facturaService: FacturaService, public dialog: MatDialog) { 
       if (result) {
         this.facturaService.createInvoice(result).subscribe(() => {
           this.getListInvoices();
+          this.getSummaryByCity();
         });
       }
     });
@@ -121,6 +122,7 @@ constructor(private facturaService: FacturaService, public dialog: MatDialog) { 
       if (result) {
         this.facturaService.updateInvoice(result).subscribe(() => {
           this.getListInvoices();
+          this.getSummaryByCity();
         });
       }
     });
