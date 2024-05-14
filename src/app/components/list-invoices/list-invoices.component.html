@@ -38,4 +38,22 @@
       <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
     </mat-card-content>
   </mat-card>
+
+
+
+
+  <mat-card>
+    <mat-card-title>Summary by City</mat-card-title>
+    <mat-card-content>
+      <ngx-charts-pie-chart
+        [view]="view"
+        [results]="pieChartData"
+        [legend]="showLegend"
+        [labels]="showLabels"
+        [doughnut]="isDoughnut"
+        [gradient]="gradient"
+        [scheme]="'forest'">
+      </ngx-charts-pie-chart>
+    </mat-card-content>
+  </mat-card>
 </div>

@@ -13,10 +13,13 @@ import { AddInvoiceComponent } from '../add-invoice/add-invoice.component';
 import { EditInvoiceComponent } from '../edit-invoice/edit-invoice.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+
+import {  NgxChartsModule } from '@swimlane/ngx-charts';
 @Component({
   selector: 'app-list-invoices',
   standalone: true,
   imports: [
+    NgxChartsModule,
     MatButtonModule,
     MatIconModule,
     MatCardModule,
@@ -25,7 +28,7 @@ import { MatSort } from '@angular/material/sort';
     MatFormFieldModule,
     MatDialogModule,
     MatToolbarModule,
-    MatPaginator
+    MatPaginator,
   ],
   templateUrl: './list-invoices.component.html',
   styleUrl: './list-invoices.component.css'
@@ -34,7 +37,6 @@ export class ListInvoicesComponent {
   displayedColumns: string[] = ['Number', 'City', 'NameProduct', 'Value', 'Actions'];
   dataSource!: MatTableDataSource<InvoiceDto>;
 
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -42,6 +44,16 @@ export class ListInvoicesComponent {
   ];
 
 
+
+// Variables para la gráfica
+view: [number, number] = [700, 400];
+pieChartData: any[] = [];
+showLegend: boolean = true;
+showLabels: boolean = true;
+gradient: boolean = false;
+isDoughnut: boolean = false;
+
+constructor(private facturaService: FacturaService, public dialog: MatDialog) { }      
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -59,11 +71,20 @@ export class ListInvoicesComponent {
 
 
 
-  constructor(private facturaService: FacturaService, public dialog: MatDialog) { }      
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource(this.invoices);
     this.getListInvoices();
+    this.getSummaryByCity();
+  }
+
+  getSummaryByCity() {
+    this.facturaService.getSummaryByCity().subscribe(data => {
+      this.pieChartData = data.map(item => ({
+        name: item.City,
+        value: item.TotalSold
+      }));
+    });
   }
 
   getListInvoices() {
