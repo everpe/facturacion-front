@@ -2,4 +2,6 @@ mat-form-field {
     display: block;
     margin-bottom: 16px;
   }
-  
+.container{
+  padding: 10px;  
+}
